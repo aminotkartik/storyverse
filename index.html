@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#171713">
+  <meta name="description" content="A manga you walk through. FIFTEEN SECONDS is an interactive story about pedestrian time, civic responsibility, and the people who make a city.">
+  <title>FIFTEEN SECONDS — A manga you walk through</title>
+  <link rel="preload" as="image" href="assets/crossing-chaos.jpg" fetchpriority="high">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#chapter-1">Skip to the story</a>
+
+  <div class="loading-screen" id="loadingScreen" aria-hidden="true">
+    <div class="loading-signal">
+      <svg viewBox="0 0 78 112" role="presentation">
+        <path d="M18 8h42a7 7 0 0 1 7 7v82a7 7 0 0 1-7 7H18a7 7 0 0 1-7-7V15a7 7 0 0 1 7-7Z" />
+        <circle cx="39" cy="32" r="12" />
+        <circle cx="39" cy="65" r="12" />
+        <path d="M39 96V78m0 0-7 8m7-8 7 8M29 104h20" />
+      </svg>
+      <span class="loading-light"></span>
+    </div>
+    <p>Loading the city<span class="loading-ellipsis">...</span></p>
+  </div>
+
+  <section class="intro" id="intro" aria-labelledby="intro-title">
+    <div class="intro-grain" aria-hidden="true"></div>
+    <div class="intro-signal" aria-hidden="true">
+      <svg viewBox="0 0 96 140">
+        <path class="signal-outline" d="M20 8h56a8 8 0 0 1 8 8v108a8 8 0 0 1-8 8H20a8 8 0 0 1-8-8V16a8 8 0 0 1 8-8Z" />
+        <circle class="signal-lamp lamp-red" cx="48" cy="40" r="16" />
+        <circle class="signal-lamp lamp-dark" cx="48" cy="89" r="16" />
+        <path class="signal-walk" d="M48 128V112m0 0-7 8m7-8 7 8M35 132h26" />
+      </svg>
+    </div>
+    <p class="intro-eyebrow">A signal. A morning. A question.</p>
+    <div class="intro-count" id="introCount" aria-hidden="true">15</div>
+    <div class="intro-impact" id="introImpact" aria-hidden="true">HONK.</div>
+    <div class="intro-title-block" id="introTitleBlock" aria-hidden="true">
+      <p class="intro-overline">AN INTERACTIVE MANGA</p>
+      <h1 id="intro-title">FIFTEEN<br><span>SECONDS</span></h1>
+      <p class="intro-subtitle intro-line-one">A city gave everyone the same amount of time.</p>
+      <p class="intro-subtitle intro-line-two">But it forgot that people move differently.</p>
+      <button class="begin-button" id="beginButton" type="button" disabled>BEGIN <span aria-hidden="true">↗</span></button>
+    </div>
+    <div class="intro-controls">
+      <button class="sound-control intro-sound" id="introSoundToggle" type="button" aria-pressed="false" aria-label="Turn ambient sound on">SOUND <span>OFF</span></button>
+      <button class="intro-skip" id="skipIntro" type="button" disabled>SKIP COUNTDOWN <span aria-hidden="true">↗</span></button>
+    </div>
+    <span class="intro-side-note" aria-hidden="true">SCENE 00 · THE COUNTDOWN</span>
+  </section>
+
+  <header class="hud" id="hud" hidden>
+    <a class="hud-brand" href="#chapter-1" aria-label="Fifteen Seconds, go to the first chapter">
+      <span>FIFTEEN</span><span>SECONDS<span class="brand-period">.</span></span>
+    </a>
+    <div class="hud-tools" role="group" aria-label="Story controls">
+      <button class="sound-control hud-sound" id="soundToggle" type="button" aria-pressed="false" aria-label="Turn ambient sound on">SOUND <span>OFF</span></button>
+      <button class="menu-button" id="menuButton" type="button" aria-haspopup="dialog" aria-controls="chapterMenu">
+        <span class="menu-glyph" aria-hidden="true">☰</span><span>CHAPTERS</span>
+      </button>
+    </div>
+    <div class="hud-progress" role="group" aria-label="Story progress">
+      <span class="hud-chapter" id="hudChapter">01 — THE CROSSING</span>
+      <span class="hud-page" id="hudPage" aria-live="polite">01 <i>/</i> 10</span>
+      <span class="progress-track"><span class="progress-fill" id="progressFill"></span></span>
+    </div>
+    <div class="hud-signal" role="group" aria-label="Pedestrian signal motif">
+      <span class="hud-signal-label">SIGNAL</span>
+      <span class="hud-signal-value" id="hudSignal">15</span>
+      <span class="hud-signal-unit">SEC</span>
+    </div>
+  </header>
+
+  <dialog class="chapter-menu" id="chapterMenu" aria-labelledby="menuTitle">
+    <div class="menu-paper">
+      <div class="menu-topline"><span>FIELD GUIDE · 01—10</span><button class="menu-close" id="menuClose" type="button" aria-label="Close chapter menu">CLOSE <span aria-hidden="true">×</span></button></div>
+      <h2 id="menuTitle">Read the<br><em>street.</em></h2>
+      <nav aria-label="Chapters">
+        <a href="#chapter-1"><span>01</span> The crossing <i>↗</i></a>
+        <a href="#chapter-2"><span>02</span> Fifteen seconds <i>↗</i></a>
+        <a href="#chapter-3"><span>03</span> Look again <i>↗</i></a>
+        <a href="#chapter-4"><span>04</span> The average human <i>↗</i></a>
+        <a href="#chapter-5"><span>05</span> The mirror <i>↗</i></a>
+        <a href="#chapter-6"><span>06</span> The numbers <i>↗</i></a>
+        <a href="#chapter-7"><span>07</span> Give them 15 seconds <i>↗</i></a>
+        <a href="#chapter-8"><span>08</span> The second person <i>↗</i></a>
+        <a href="#chapter-9"><span>09</span> 34 seconds <i>↗</i></a>
+        <a href="#chapter-10"><span>10</span> The city <i>↗</i></a>
+      </nav>
+      <p class="menu-footnote">One morning. One crossing. A city made of choices.</p>
+    </div>
+  </dialog>
+
+  <div class="presentation-label" id="presentationLabel" aria-live="polite">PRESENTATION MODE · PRESS P TO EXIT</div>
+
+  <main class="story" id="story" inert aria-label="Fifteen Seconds, an interactive graphic novel">
+    <section class="chapter chapter-crossing" id="chapter-1" data-chapter="1" aria-labelledby="chapter1-title">
+      <div class="chapter-heading chapter-heading--light">
+        <p class="chapter-index"><span>01</span> / 10 <i>—</i> THE CROSSING</p>
+        <p class="chapter-direction">SCROLL TO READ <span aria-hidden="true">↓</span></p>
+      </div>
+      <div class="crossing-panel manga-panel" id="crossingPanel">
+        <img class="crossing-art" src="assets/crossing-chaos.jpg" alt="At a busy Indian intersection, Tara stands beside her grandfather Dadu at the zebra crossing while vehicles crowd the road." fetchpriority="high" width="1360" height="768">
+        <div class="crossing-vignette" aria-hidden="true"></div>
+        <div class="crossing-speedlines" aria-hidden="true"></div>
+        <div class="crossing-copy">
+          <p class="scene-stamp">PUNE · 08:14 AM · MONDAY</p>
+          <h2 id="chapter1-title">Same road.<br><em>Every morning.</em></h2>
+          <p>Tara, 19, knows the signal. Dadu, 72, knows how long it takes to reach the other side.</p>
+        </div>
+        <div class="signal-station" role="group" aria-label="Interactive pedestrian signal">
+          <div class="signal-face" aria-hidden="true">
+            <span class="signal-dot"></span>
+            <span class="signal-walk-icon"><i></i><b></b><em></em></span>
+          </div>
+          <div class="signal-reading">
+            <span class="signal-word" id="signalWord">WAIT</span>
+            <span class="signal-digits" id="crossTimer">15</span>
+            <span class="signal-seconds">SECONDS</span>
+          </div>
+          <button class="signal-button" id="signalButton" type="button" aria-describedby="signalHelp">
+            <span class="signal-button-mark" aria-hidden="true">↗</span>
+            <span>PRESS THE SIGNAL</span>
+          </button>
+          <p class="signal-help" id="signalHelp">The walk light is waiting for you.</p>
+        </div>
+        <div class="panel-caption">A TIMER FOR ONE KIND OF BODY.</div>
+        <span class="panel-edge-note" aria-hidden="true">INK / 01</span>
+      </div>
+      <div class="crossing-status-row">
+        <p class="crossing-status" id="crossingStatus" role="status" aria-live="polite">Tap the signal. Stay with them as the seconds run.</p>
+        <p class="crossing-side-caption">THE STREET DOESN'T PAUSE.</p>
+      </div>
+      <div class="crossing-after" id="crossingAfter" hidden>
+        <p class="after-label">00 / NO TIME LEFT</p>
+        <blockquote>“Maine kya galat kiya?”<span>What did I do wrong?</span></blockquote>
+        <p>Nothing. And still, the road asked him to hurry.</p>
+        <a class="next-chapter-link" href="#chapter-2">TURN THE PAGE <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="chapter-tail"><span>THE FIRST THING WE NOTICE IS THE TIMER.</span><span>KEEP READING ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-comparison paper-chapter" id="chapter-2" data-chapter="2" aria-labelledby="chapter2-title">
+      <div class="chapter-heading">
+        <p class="chapter-index"><span>02</span> / 10 <i>—</i> FIFTEEN SECONDS</p>
+        <p class="chapter-direction">THE SAME CROSSING <span aria-hidden="true">↘</span></p>
+      </div>
+      <div class="section-intro compare-intro">
+        <p class="eyebrow">ONE SIGNAL. MANY BODIES.</p>
+        <h2 id="chapter2-title">Who gets<br><em>to the other side?</em></h2>
+        <p>Choose a walker. The crossing stays the same. So does the timer.</p>
+      </div>
+      <div class="comparison-layout">
+        <div class="walker-list" role="group" aria-label="Choose a pedestrian to replay the 15-second crossing">
+          <button class="walker-card is-selected" type="button" data-person="student" aria-pressed="true">
+            <span class="walker-avatar avatar-student" aria-hidden="true"><i></i><b></b></span><span class="walker-info"><strong>College student</strong><small>light bag · quick stride</small></span><span class="walker-time">11<small>SEC</small></span>
+          </button>
+          <button class="walker-card" type="button" data-person="groceries" aria-pressed="false">
+            <span class="walker-avatar avatar-groceries" aria-hidden="true"><i></i><b></b></span><span class="walker-info"><strong>Carrying groceries</strong><small>both hands occupied</small></span><span class="walker-time">17<small>SEC</small></span>
+          </button>
+          <button class="walker-card" type="button" data-person="parent" aria-pressed="false">
+            <span class="walker-avatar avatar-parent" aria-hidden="true"><i></i><b></b></span><span class="walker-info"><strong>Parent + child</strong><small>one hand to hold</small></span><span class="walker-time">24<small>SEC</small></span>
+          </button>
+          <button class="walker-card" type="button" data-person="elder" aria-pressed="false">
+            <span class="walker-avatar avatar-elder" aria-hidden="true"><i></i><b></b></span><span class="walker-info"><strong>Elderly pedestrian</strong><small>careful, steady steps</small></span><span class="walker-time">27<small>SEC</small></span>
+          </button>
+          <button class="walker-card" type="button" data-person="mobility" aria-pressed="false">
+            <span class="walker-avatar avatar-mobility" aria-hidden="true"><i></i><b></b></span><span class="walker-info"><strong>Mobility difficulty</strong><small>the curb is its own obstacle</small></span><span class="walker-time">31<small>SEC</small></span>
+          </button>
+        </div>
+        <div class="replay-panel manga-panel" id="replayPanel">
+          <div class="replay-image-wrap">
+            <img src="assets/crossing-chaos.jpg" alt="The same zebra crossing seen from curb to curb." loading="lazy" width="1360" height="768">
+            <span class="replay-stamp">SAME ROAD / SAME SIGNAL</span>
+            <span class="replay-clock"><span>WALK</span><strong>15</strong><small>SEC</small></span>
+          </div>
+          <div class="walk-track" aria-hidden="true">
+            <span class="track-curb">CURB</span><span class="track-stripes"></span><span class="track-finish">OTHER SIDE</span>
+            <span class="walk-marker" id="walkMarker"><i></i><b></b></span>
+          </div>
+          <div class="replay-readout" id="replayReadout" role="status" aria-live="polite">
+            <strong>11 SEC / COLLEGE STUDENT</strong><span>Four seconds to spare. Pick another walker to compare the same rule.</span>
+          </div>
+        </div>
+      </div>
+      <div class="fairness-line"><span class="fairness-number">15 <small>SEC</small></span><p>Equal does not<br><em>always mean fair.</em></p><span class="fairness-rule" aria-hidden="true"></span></div>
+      <div class="chapter-tail"><span>THE TIMER WAS BUILT FOR AN AVERAGE.</span><span>WHO WAS THAT? ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-look paper-chapter" id="chapter-3" data-chapter="3" aria-labelledby="chapter3-title">
+      <div class="chapter-heading">
+        <p class="chapter-index"><span>03</span> / 10 <i>—</i> LOOK AGAIN</p>
+        <p class="chapter-direction">FIND THE EVIDENCE <span aria-hidden="true">⌕</span></p>
+      </div>
+      <div class="look-intro">
+        <div><p class="eyebrow">NOTHING HERE LOOKS EXCEPTIONAL.</p><h2 id="chapter3-title">Look<br><em>again.</em></h2></div>
+        <p class="look-prompt"><span class="look-crosshair" aria-hidden="true">+</span> Tap the red marks.<br>The ordinary is full of evidence.</p>
+      </div>
+      <div class="look-scene-wrap">
+        <figure class="look-scene manga-panel" aria-labelledby="lookCaption">
+          <img src="assets/look-again.jpg" alt="A busy Indian neighborhood street with a scooter on the footpath, a car on the crossing, a blocked curb ramp, litter beside a bin, and an impatient driver." loading="lazy" width="1360" height="768">
+          <span class="look-scene-tag">A STREET, ANY TUESDAY · 08:19 AM</span>
+          <button class="hotspot" style="--x:25%;--y:77%" data-hotspot="footpath" type="button" aria-label="Discover the scooter blocking the footpath" aria-pressed="false"><span>01</span></button>
+          <button class="hotspot" style="--x:63%;--y:64%" data-hotspot="crossing" type="button" aria-label="Discover the car stopped on the zebra crossing" aria-pressed="false"><span>02</span></button>
+          <button class="hotspot" style="--x:86%;--y:78%" data-hotspot="litter" type="button" aria-label="Discover litter left beside the public bin" aria-pressed="false"><span>03</span></button>
+          <button class="hotspot" style="--x:18%;--y:49%" data-hotspot="horn" type="button" aria-label="Discover the driver honking at the crossing" aria-pressed="false"><span>04</span></button>
+          <button class="hotspot" style="--x:73%;--y:80%" data-hotspot="ramp" type="button" aria-label="Discover the blocked accessibility ramp" aria-pressed="false"><span>05</span></button>
+          <figcaption id="lookCaption" class="look-caption"><span id="discoveryCount">0 / 5 FOUND</span><span id="lookPrompt">A good-looking street can hide a lot.</span></figcaption>
+        </figure>
+        <aside class="evidence-card" id="evidenceCard" aria-live="polite" aria-atomic="true">
+          <span class="evidence-mark">EVIDENCE <i id="evidenceNumber">00</i></span>
+          <h3 id="evidenceTitle">The street is speaking.</h3>
+          <p id="evidenceCopy">Tap a marker in the panel. Each small convenience leaves a trace.</p>
+          <span class="evidence-index">FIELD NOTE / <span id="evidenceTotal">00</span></span>
+        </aside>
+      </div>
+      <p class="look-conclusion" id="lookConclusion" hidden>None of these moments is rare.<br><em>That is the emergency.</em></p>
+      <div class="chapter-tail"><span>THE TIMER IS ONLY A SYMPTOM.</span><span>FOLLOW THE ASSUMPTION ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-average" id="chapter-4" data-chapter="4" aria-labelledby="chapter4-title">
+      <div class="chapter-heading chapter-heading--light">
+        <p class="chapter-index"><span>04</span> / 10 <i>—</i> THE AVERAGE HUMAN</p>
+        <p class="chapter-direction">TRAFFIC CONTROL ROOM · 08:26 AM</p>
+      </div>
+      <div class="control-room-layout">
+        <div class="control-room-copy">
+          <p class="eyebrow">TARA ASKS THE QUESTION THE SCREEN DOESN'T.</p>
+          <h2 id="chapter4-title">The number<br>looked <em>neutral.</em></h2>
+          <div class="dialogue-stack">
+            <p class="dialogue tara-dialogue"><b>TARA</b><span>“Average?”</span></p>
+            <p class="dialogue engineer-dialogue"><b>ENGINEER</b><span>“Most pedestrians can cross within fifteen seconds.”</span></p>
+            <p class="dialogue tara-dialogue"><b>TARA</b><span>“But who is the average pedestrian?”</span></p>
+          </div>
+        </div>
+        <div class="control-monitor manga-panel" id="controlMonitor">
+          <div class="monitor-topline"><span>PEDESTRIAN PHASE / SIGNAL 04</span><span>CONFIG. 01.7</span></div>
+          <div class="monitor-screen">
+            <p class="monitor-label">CURRENT ASSUMPTION</p>
+            <div class="average-phrase" id="averagePhrase"><span>AVERAGE</span><span>PEDESTRIAN</span></div>
+            <div class="average-time"><strong>15</strong><span>SECONDS</span></div>
+            <div class="human-fragments" id="humanFragments" role="group" aria-hidden="true" aria-label="The people included in the average: a child, an elderly person, a parent, a wheelchair user, an injured person, a student, a worker, a tourist, everyone">
+              <span>child</span><span>elderly person</span><span>parent</span><span>wheelchair user</span><span>injured person</span><span>student</span><span>worker</span><span>tourist</span><span>everyone</span>
+            </div>
+            <p class="average-truth" id="averageTruth" hidden>THERE IS NO<br><em>AVERAGE PERSON.</em></p>
+          </div>
+          <div class="monitor-bottomline"><span>RECALCULATE THE HUMAN</span><span class="monitor-live-dot">● LIVE</span></div>
+          <button class="monitor-button" id="deconstructAverage" type="button">SHOW ME WHO YOU MEAN <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+      <div class="chapter-tail chapter-tail--light"><span>THE DESIGN WASN'T NEUTRAL.</span><span>THE STREET HAS A MIRROR ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-mirror" id="chapter-5" data-chapter="5" aria-labelledby="chapter5-title">
+      <div class="chapter-heading">
+        <p class="chapter-index"><span>05</span> / 10 <i>—</i> THE MIRROR</p>
+        <p class="chapter-direction">KEEP SCROLLING TO TURN IT <span aria-hidden="true">↕</span></p>
+      </div>
+      <div class="section-intro mirror-intro">
+        <p class="eyebrow">A CITY FULL OF COMPLAINTS</p>
+        <h2 id="chapter5-title">“Roads are<br><em>horrible.”</em></h2>
+        <p>The blame has a direction. Until the glass moves.</p>
+      </div>
+      <div class="mirror-scroll" id="mirrorScroll">
+        <div class="mirror-sticky">
+          <div class="mirror-frame">
+            <div class="mirror-shell" id="mirrorShell">
+              <div class="mirror-face mirror-face-system">
+                <span class="mirror-face-label">THE SYSTEM</span>
+                <div class="complaint-cloud"><span>“The roads are horrible.”</span><span>“Government does nothing.”</span><span>“This city has no discipline.”</span></div>
+                <div class="mirror-city-line" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
+                <span class="mirror-hint">SCROLL TO TURN <b>↓</b></span>
+              </div>
+              <div class="mirror-face mirror-face-us">
+                <span class="mirror-face-label">US</span>
+                <div class="mirror-actions"><span>blocking a footpath</span><span>jumping a signal</span><span>littering</span><span>parking on a ramp</span><span>honking to hurry</span><span>cutting the queue</span></div>
+                <span class="mirror-reflection">The reflection<br>isn't somebody else.</span>
+              </div>
+            </div>
+          </div>
+          <button class="mirror-button" id="turnMirror" type="button" aria-pressed="false">TURN THE MIRROR <span aria-hidden="true">↻</span></button>
+        </div>
+      </div>
+      <div class="mirror-realization">
+        <p class="eyebrow">THE GLASS CLEARS.</p>
+        <blockquote>We blamed the system so often<br>that we forgot—<br><em>a system is made of people.</em></blockquote>
+        <p class="mirror-last-line">And sometimes,<br><strong>we are the system.</strong></p>
+      </div>
+      <div class="chapter-tail"><span>INFRASTRUCTURE. ENFORCEMENT. HABIT.</span><span>THE EVIDENCE ADDS UP ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-notebook paper-chapter" id="chapter-6" data-chapter="6" aria-labelledby="chapter6-title">
+      <div class="chapter-heading">
+        <p class="chapter-index"><span>06</span> / 10 <i>—</i> THE NUMBERS</p>
+        <p class="chapter-direction">TARA'S FIELD NOTES · 08:14 AM</p>
+      </div>
+      <div class="section-intro notebook-intro">
+        <p class="eyebrow">ONE ROUTE. ONE MORNING. NOT A CITYWIDE SURVEY.</p>
+        <h2 id="chapter6-title">She starts<br><em>writing it down.</em></h2>
+      </div>
+      <div class="notebook-layout">
+        <div class="field-notebook" id="fieldNotebook">
+          <div class="notebook-binding" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="notebook-page" id="notebookPage" aria-live="polite">
+            <div class="notebook-page-top"><span>FIELD NOTES</span><span>08:14 AM / MON.</span></div>
+            <div class="notebook-content">
+              <p class="handwritten-overline">AT THE CROSSING</p>
+              <p class="notebook-time"><span id="notebookTime">11</span><small>SEC</small></p>
+              <h3 id="notebookSubject">A student with a light bag.</h3>
+              <p id="notebookObservation">Across before the signal blinks. Four seconds left.</p>
+              <span class="notebook-scribble" id="notebookScribble">fast enough.</span>
+            </div>
+            <div class="notebook-page-bottom"><span id="notebookPageNumber">01 / 05</span><span>✎</span></div>
+          </div>
+          <div class="notebook-controls">
+            <button id="notebookPrev" type="button" aria-label="Previous field note" disabled>← <span>PREV</span></button>
+            <span class="notebook-turn-hint">FLIP THE PAGE</span>
+            <button id="notebookNext" type="button" aria-label="Next field note"> <span>NEXT</span> →</button>
+          </div>
+        </div>
+        <div class="tally-sheet">
+          <p class="tally-label">MARGINALIA / THE SAME WALK</p>
+          <h3>Small things<br><em>accumulate.</em></h3>
+          <div class="tally-row"><span>FOOTPATH BLOCKED</span><span class="tally-marks" aria-hidden="true">||||||||</span></div>
+          <div class="tally-row"><span>CROSSING BLOCKED</span><span class="tally-marks" aria-hidden="true">||||||</span></div>
+          <div class="tally-row"><span>RAMP BLOCKED</span><span class="tally-marks" aria-hidden="true">|||||||</span></div>
+          <div class="tally-row"><span>RED LIGHT IGNORED</span><span class="tally-marks" aria-hidden="true">||||||||</span></div>
+          <p class="tally-disclaimer">Illustrative marks from Tara's fictional route—not measured city statistics.</p>
+          <p class="notebook-conclusion">The timer wasn't the problem.<br><em>The assumption was.</em></p>
+        </div>
+      </div>
+      <div class="chapter-tail"><span>NOTICE. NAME. REMEMBER.</span><span>NOW MAKE IT VISIBLE ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-campaign" id="chapter-7" data-chapter="7" aria-labelledby="chapter7-title">
+      <div class="chapter-heading chapter-heading--light">
+        <p class="chapter-index"><span>07</span> / 10 <i>—</i> GIVE THEM 15 SECONDS</p>
+        <p class="chapter-direction">A SMALL CAMPAIGN FOR A SHARED STREET</p>
+      </div>
+      <div class="campaign-intro">
+        <p class="eyebrow">TARA MAKES A SIGN. NOT A SPEECH.</p>
+        <h2 id="chapter7-title">Give them<br><em>15 seconds.</em></h2>
+        <div class="campaign-rules" role="group" aria-label="Campaign promises">
+          <span>DON'T HONK.</span><span>DON'T BLOCK THE CROSSING.</span><span>DON'T PARK ON THE RAMP.</span><span>DON'T MAKE SOMEONE ELSE PAY FOR YOUR CONVENIENCE.</span>
+        </div>
+      </div>
+      <div class="campaign-stage manga-panel" id="campaignStage">
+        <img src="assets/look-again.jpg" alt="A neighborhood wall beside a busy Indian street, where a civic poster can be placed." loading="lazy" width="1360" height="768">
+        <div class="campaign-shade" aria-hidden="true"></div>
+        <div class="poster-target" id="posterTarget" aria-hidden="true"><span>NOTICE BOARD</span><i>PLACE HERE</i></div>
+        <button class="poster-card" id="campaignPoster" type="button" aria-label="Place the Give Them 15 Seconds poster here; drag it to the notice board or tap to place it">
+          <span class="poster-tape" aria-hidden="true"></span>
+          <span class="poster-small">A NOTE TO THE CITY</span>
+          <strong>GIVE THEM<br><em>15</em> SECONDS.</strong>
+          <span class="poster-rules">DON'T HONK.<br>DON'T BLOCK THE CROSSING.<br>KEEP THE RAMP CLEAR.</span>
+          <span class="poster-foot">A SMALL THING. A SHARED STREET.</span>
+        </button>
+        <div class="campaign-bystanders" id="campaignBystanders" aria-hidden="true"><span class="bystander bystander-one">●</span><span class="bystander bystander-two">●</span><span class="bystander bystander-three">●</span></div>
+        <div class="campaign-status" id="campaignStatus" role="status" aria-live="polite"><span class="campaign-status-tag">FIRST, PLACE THE NOTE.</span><span>Drag the poster to the board—or tap it.</span></div>
+      </div>
+      <p class="campaign-quiet">At first, a few people laugh.<br>Most just keep walking.</p>
+      <div class="chapter-tail chapter-tail--light"><span>A CAMPAIGN IS A BEGINNING, NOT A FIX.</span><span>ONE PERSON STOPS ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-chain paper-chapter" id="chapter-8" data-chapter="8" aria-labelledby="chapter8-title">
+      <div class="chapter-heading">
+        <p class="chapter-index"><span>08</span> / 10 <i>—</i> THE SECOND PERSON</p>
+        <p class="chapter-direction">A CHOICE IS A SMALL KIND OF DESIGN</p>
+      </div>
+      <div class="section-intro chain-intro">
+        <p class="eyebrow">NO POINTS. NO PERFECT CITIZEN.</p>
+        <h2 id="chapter8-title">One small choice<br><em>makes room.</em></h2>
+        <p>Try three ordinary moments. No one gets it right every time. What happens next is the point.</p>
+      </div>
+      <div class="chain-layout">
+        <div class="choice-card manga-panel" id="choiceCard">
+          <div class="choice-card-top"><span id="choiceStep">MOMENT 01 / 03</span><span class="choice-spark" aria-hidden="true">✳</span></div>
+          <p class="choice-scene-label" id="choiceSceneLabel">AT THE FOOTPATH</p>
+          <h3 id="choiceTitle">“Just for a minute.”</h3>
+          <p class="choice-prompt" id="choicePrompt">A motorcyclist eases toward the curb ramp. The parking spot is tempting. The ramp is someone's way through.</p>
+          <div class="choice-options" id="choiceOptions">
+            <button type="button" data-choice="careless" class="choice-option choice-option--quiet">It's only for a minute.</button>
+            <button type="button" data-choice="careful" class="choice-option choice-option--good">Find another place <span aria-hidden="true">↗</span></button>
+          </div>
+          <p class="choice-feedback" id="choiceFeedback" role="status" aria-live="polite"></p>
+          <button class="choice-next" id="choiceNext" type="button" hidden>NEXT SMALL CHOICE <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="chain-visual" role="group" aria-label="A visual chain of neighbors making room for one another">
+          <div class="chain-line" aria-hidden="true"></div>
+          <div class="chain-neighbor chain-neighbor-one is-lit" data-neighbor="1"><span class="neighbor-head"></span><span class="neighbor-body"></span><small>YOU</small></div>
+          <div class="chain-neighbor chain-neighbor-two" data-neighbor="2"><span class="neighbor-head"></span><span class="neighbor-body"></span><small>ONE MORE</small></div>
+          <div class="chain-neighbor chain-neighbor-three" data-neighbor="3"><span class="neighbor-head"></span><span class="neighbor-body"></span><small>THEN ANOTHER</small></div>
+          <p class="chain-copy" id="chainCopy">A clear ramp is a route someone can actually use.</p>
+          <div class="chain-ending" id="chainEnding" hidden>
+            <p>ONE PERSON CAN'T CHANGE THE CITY.</p>
+            <p class="chain-ending-second">THE SECOND <em>CAN.</em></p>
+          </div>
+        </div>
+      </div>
+      <div class="chapter-tail"><span>ONE PERSON'S ACTION BECOMES ANOTHER PERSON'S POSSIBILITY.</span><span>THE SAME ROAD, AGAIN ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-calm" id="chapter-9" data-chapter="9" aria-labelledby="chapter9-title">
+      <div class="chapter-heading chapter-heading--light">
+        <p class="chapter-index"><span>09</span> / 10 <i>—</i> 34 SECONDS</p>
+        <p class="chapter-direction">TAKE THE TIME YOU NEED <span aria-hidden="true">↓</span></p>
+      </div>
+      <div class="calm-intro">
+        <p class="eyebrow">THE SAME INTERSECTION. A DIFFERENT KIND OF WAITING.</p>
+        <h2 id="chapter9-title">This time,<br><em>the city waits.</em></h2>
+        <p>Scroll at Dadu's pace. Nothing is chasing him now.</p>
+      </div>
+      <div class="calm-scroll" id="calmScroll">
+        <div class="calm-sticky">
+          <div class="calm-panel manga-panel" id="calmPanel">
+            <img src="assets/crossing-calm.jpg" alt="Tara and Dadu cross safely while traffic waits behind a clear zebra crossing in warm evening light." loading="lazy" width="1360" height="768">
+            <div class="calm-image-wash" aria-hidden="true"></div>
+            <div class="calm-signal-display"><span>WALK / 34 SECONDS</span><strong>34</strong><small>TAKE YOUR TIME</small></div>
+            <div class="calm-story-copy">
+              <p class="calm-step-label" id="calmStepLabel">THE SIGNAL HOLDS.</p>
+              <h3 id="calmStepTitle">Dadu takes<br>the first step.</h3>
+              <p id="calmStepCopy">No horn behind him. No vehicle over the white lines.</p>
+            </div>
+            <progress class="calm-progress-rail" id="calmProgressBar" aria-label="Dadu's crossing, controlled by scroll" max="100" value="0">0%</progress>
+            <span class="calm-frame-note">PANEL 09 · HOLD THE FRAME</span>
+          </div>
+        </div>
+      </div>
+      <div class="calm-reveal">
+        <p>The city finally gave them more time.</p>
+        <p>But that wasn't the real change.</p>
+        <p class="calm-reveal-final">The real change was that people finally stopped stealing time from one another.</p>
+      </div>
+      <div class="chapter-tail chapter-tail--light"><span>THE NUMBER CHANGED.</span><span>THE NEIGHBOURHOOD CHANGED FIRST ↓</span></div>
+    </section>
+
+    <section class="chapter chapter-city paper-chapter" id="chapter-10" data-chapter="10" aria-labelledby="chapter10-title">
+      <div class="chapter-heading">
+        <p class="chapter-index"><span>10</span> / 10 <i>—</i> THE CITY</p>
+        <p class="chapter-direction">ONE CROSSING BECOMES A COMMON PLACE</p>
+      </div>
+      <div class="city-zoom-scroll" id="cityZoomScroll">
+        <div class="city-zoom-sticky">
+          <div class="city-zoom-art" id="cityZoomArt">
+            <img src="assets/crossing-calm.jpg" alt="The safe crossing opens into the streets and people of a neighborhood." loading="lazy" width="1360" height="768">
+            <div class="city-map-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+            <span class="city-zoom-label" id="cityZoomLabel">ONE CROSSING</span>
+            <div class="city-zoom-steps" aria-hidden="true"><span class="is-active">CROSSING</span><i>→</i><span>STREET</span><i>→</i><span>NEIGHBOURHOOD</span><i>→</i><span>CITY</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="manifesto" id="manifesto">
+        <p class="eyebrow">THE LAST PANEL ISN'T A PERFECT CITY.</p>
+        <h2 id="chapter10-title">A city should not ask people<br><em>to become faster.</em><br><span>It should learn</span><br><em>to become fairer.</em></h2>
+        <div class="manifesto-bottom">
+          <p>A civil society doesn't begin with big laws.</p>
+          <p>It begins with small things we choose not to do.</p>
+          <strong>DON'T DESIGN FOR THE AVERAGE HUMAN.<br>BUILD FOR HUMANITY.</strong>
+        </div>
+      </div>
+      <div class="civic-promise" id="civicPromise">
+        <div class="promise-heading">
+          <p class="eyebrow">THE STORY DOESN'T END AT THE CURB.</p>
+          <h3>What will you<br><em>not do today?</em></h3>
+          <p>Choose one. Not as a badge—as a small promise to someone you may never meet.</p>
+        </div>
+        <div class="promise-actions" role="group" aria-label="Choose a small civic promise">
+          <button type="button" data-promise="I won't block a footpath.">I won't block a footpath.</button>
+          <button type="button" data-promise="I won't park on an accessibility ramp.">I won't park on an accessibility ramp.</button>
+          <button type="button" data-promise="I won't stop on a zebra crossing.">I won't stop on a zebra crossing.</button>
+          <button type="button" data-promise="I won't honk at someone who needs more time.">I won't honk at someone who needs more time.</button>
+          <button type="button" data-promise="I'll leave public spaces better than I found them.">I'll leave public spaces better than I found them.</button>
+        </div>
+        <div class="promise-wall-wrap">
+          <div class="promise-wall-heading"><span>NOTES LEFT ON THIS DEVICE</span><span id="promiseCount">0 / 08</span></div>
+          <ul class="promise-wall" id="promiseWall" aria-live="polite" aria-label="Anonymous promises saved on this device"></ul>
+          <p class="promise-storage-note" id="promiseStatus">Your note stays in this browser. No account. No leaderboard.</p>
+        </div>
+        <p class="promise-wall-closer" id="promiseCloser" hidden>MAYBE CIVIC SENSE<br>IS JUST EMPATHY<br><em>MADE VISIBLE.</em></p>
+      </div>
+      <div class="final-page" id="finalPage">
+        <div class="final-page-rule" aria-hidden="true"></div>
+        <p class="final-last-line">“Someone may need the time<br>you are trying to save.”</p>
+        <div class="final-page-footer">
+          <div><strong>FIFTEEN<br>SECONDS.</strong><span>A StoryVerse project</span></div>
+          <div class="sdg-mark"><span>11</span><small>SDG 11 ·<br>SUSTAINABLE CITIES<br>&amp; COMMUNITIES</small></div>
+          <button class="enter-city" id="enterCity" type="button">ENTER THE CITY AGAIN <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+      <footer class="story-footer"><span>FIFTEEN SECONDS · AN INTERACTIVE MANGA</span><span>MADE FOR SHARED STREETS, EVERYWHERE.</span></footer>
+    </section>
+  </main>
+
+</body>
+</html>
