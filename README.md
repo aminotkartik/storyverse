@@ -18,6 +18,18 @@ Then open <http://localhost:8000>.
 
 The files use relative asset paths, so the project can also be deployed as a static site on GitHub Pages, Vercel, or any basic web host. For GitHub Pages, publish the repository root (or the `main` directory if using a deployment workflow).
 
+## React edition (isolated feature app)
+
+`fifteen-seconds-react/` is a separate Vite + React + Tailwind v4 build of the same story, with GSAP for the Chapter 04 word fracture and Lenis for smooth scrolling. It reuses the artwork in `assets/` and does not change the static site above.
+
+```sh
+cd fifteen-seconds-react
+npm install
+npm run dev        # local development
+npm run typecheck  # TypeScript
+npm run build      # single-file build → dist/index.html (not committed)
+```
+
 ## Project map
 
 ```text
